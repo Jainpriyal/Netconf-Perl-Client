@@ -1,18 +1,18 @@
-  NETCONF Perl client
-  ===================
+NETCONF Perl client
+===================
 
-   Contents
-     * Abstract
-     * Documents
-     * Supported Platforms
-     * Downloads
-     * Installation
-     * Running the Examples
-     * Dependencies
-     * Support
+       Contents
+         * Abstract
+         * Documents
+         * Supported Platforms
+         * Downloads
+         * Installation
+         * Running the Examples
+         * Dependencies
+         * Support
 
-   Abstract
-   ========
+Abstract
+========
 
    Each Juniper Networks routing platform running JUNOS Internet software
    release 7.5B1 or later supports the NETCONF API. The NETCONF API provides
@@ -44,11 +44,8 @@
     
      my $query = "get_chassis_inventory";
      my %queryargs = ( detail => 1 );
-    
-    
      # Step 2: Create a Netconf Manager object and connect to the Juniper
      Networks routing platform
-    
      my %deviceinfo = (
       access => "ssh",
       login => "johndoe",
@@ -56,32 +53,24 @@
       hostname => "router11"
       );
       my $jnx = new Net::Netconf::Manager(%deviceinfo);
-    
       unless ( ref $jnx ) {
              croak "ERROR: $deviceinfo{hostname}: failed to connect.\n";
       }
-    
-    
-      # Step 3: send the query and receive a reply
-    
-      my $res = $jnx->$query( %queryargs );
-    
-    
+     # Step 3: send the query and receive a reply
+     my $res = $jnx->$query( %queryargs );
      # Step 4: check for error
-    
-      if ($jnx->has_error) {
+     if ($jnx->has_error) {
           croak "ERROR: in processing request \n $jnx->{request} \n";
-      } else {
-    
-    
+      } 
+      else {
      # Step 5: do something with the result
       }
     
      # Step 6: always disconnect from the server when you're done
      $jnx->disconnect();
 
-   Documents
-   ==========
+Documents
+==========
 
    The following documents are available at http://www.juniper.net/beta for
    the beta release and http://www.juniper.net/support for final release of
@@ -91,8 +80,8 @@
      * JUNOS XML API Configuration Reference
      * JUNOS XML API Operational Reference
 
-   Supported Platforms
-   ===================
+Supported Platforms
+===================
 
    The current version of this module has been tested on the following
    platforms. Later releases may support additional platforms.
@@ -100,8 +89,8 @@
      * Ubuntu 12.04LTS 
         
 
-   Downloads
-   ============
+Downloads
+============
 
        Client Perl applications can communicate with the NETCONF server via
        SSH only. The NETCONF Perl client needs a SSH client program (like
@@ -118,16 +107,14 @@
             Net::Netconf::Manager distribution in gzip format.
         
 
-   Installation
-   =============
+Installation
+=============
         Instructions for UNIX Systems
 
          1. Make sure Perl is installed. If necessary, see Installation of
             Perl.
-
             % which perl
             % perl -v
-
             The NETCONF Perl Client requires version 5.6.1 or later of the
             perl executable. Verify that you are running that version of the
             perl executable. If not, check your PATH or install the latest
@@ -136,15 +123,11 @@
          1. Download the NETCONF gzip archive from the Juniper Networks
             website. The archive is named netconf-perl-n.n.tar.gz, where n.n
             is a release code such as 7.5. For instructions, see Download.
-             
          2. Unzip and untar the archive.
-
             On FreeBSD systems:
             % tar zxf netconf-perl-n.n.tar.gz
-
          3. Change to the NETCONF directory.
             % cd netconf-perl-n.n
-            
          4. Install the prerequisites of Perl modules. If you wish to
             install the required files in your private directory instead of
             the standard directory, you can use the -install_directory option
@@ -153,12 +136,11 @@
             executable. Usually, the standard directory is /usr/lib or
             /usr/local/lib, and you'll need root privilege to install modules
             in these directories.
-
             Following are the prerequites
             1. Expect Module
             2. File::Which
             3. XML::LibXML
-            
+        
             Steps to install Prerequities in Ubuntu12.04LTS :
             1. apt-get install tcl tcl-dev tk tk-dev
             2. apt-get install expect expect-dev
@@ -167,39 +149,34 @@
             5. cpan XML::LibXML
           
          5. Create Net::Netconf makefile.
-
             If installing Net::Netconf::Manager under the standard directory
             (it's normally /usr/local/lib):
             [/my/netconf-perl-n.n]% perl Makefile.PL
-
             If installing Net::Netconf::Manager under your own private
             directory:
             [/my/netconf-perl-n.n]% perl Makefile.PL LIB=$PERL5LIB
             INSTALLMAN3DIR=$PERL5LIB/../man/man3
              
          6. Install the Net::Netconf module.
-
             [/my/netconf-perl-n.n]% make
             [/my/netconf-perl-n.n]% make install
-             
-
+  
             Notes for private directory installation:
+           * If you are installing the NETCONF modules in a private
+             directory, remember to set the PERL5LIB, MANPATH, and PATH
+             environment variables before installing the Perl modules and
+             running the examples. If the PERL5LIB variable is set, perl
+             will first look for Perl modules in the specified directory
+             before looking in the standard directory. (If you're using
+             sh, ksh or bash, use EXPORT instead of setenv.)
 
-               * If you are installing the NETCONF modules in a private
-                 directory, remember to set the PERL5LIB, MANPATH, and PATH
-                 environment variables before installing the Perl modules and
-                 running the examples. If the PERL5LIB variable is set, perl
-                 will first look for Perl modules in the specified directory
-                 before looking in the standard directory. (If you're using
-                 sh, ksh or bash, use EXPORT instead of setenv.)
-
-                 % setenv MANPATH "$MANPATH/:$PERL5LIB/../man"
-                 % man Net::Netconf::Manager
-                 % setenv PATH "$PATH/:$PERL5LIB/../bin"
-                 % which xsltproc
+             % setenv MANPATH "$MANPATH/:$PERL5LIB/../man"
+             % man Net::Netconf::Manager
+             % setenv PATH "$PATH/:$PERL5LIB/../bin"
+             % which xsltproc
                   
-   Running the Sample Scripts
-   ==========================
+Running the Sample Scripts
+==========================
 
             The NETCONF Perl distribution includes sample scripts that
             demonstrate how to use NETCONF to retrieve and change the
@@ -210,10 +187,8 @@
             This example sends a <get-system-information> request to the
             Juniper Networks routing platform and displays the result to the
             standard output.It also shows how to parse reply from server
-            
-            
-            use Net::Netconf::Manager;
 
+            use Net::Netconf::Manager;
             print "Enter hostname\n";
             my $hostname = <>;
             print "Enter username\n";
@@ -227,16 +202,12 @@
                           'login' => $login,
                           'password' => $pass,
                           'hostname' => $hostname);
-                  
             if(! $jnx ) {
                   print STDERR "Unable to connect to Junos device \n";
                   exit 1;
              }
-                  
              print "Connection established: " . $jnx->get_session_id . "\n";
-                  
              my $reply=$jnx->get_system_information();
-                  
              if ($jnx->has_error) {
              print "ERROR: in processing request\n";
              # Get the error
@@ -244,47 +215,33 @@
              $jnx->print_error_info(%$error);
              exit 1;
              }
-                  
              print "Rpc reply from server.\n";
              print ">>>>>>>>>>\n";
              print $reply;
              print "<<<<<<<<<<\n";
-                  
              #parsing reply from server
              my $config= $jnx->get_dom();
              $res= $config->getElementsByTagName("hardware-model")->item(0)->getFirstChild->getData;
              $res2= $config->getElementsByTagName("os-name")->item(0)->getFirstChild->getData;
              $res3= $config->getElementsByTagName("host-name")->item(0)->getFirstChild->getData;
-                  
              print "\nhardware information  ". $res ."\n";
              print "os-name  " .$res2 . "\n";
              print "host-name  ". $res3. "\n";
-                  
              $jnx->disconnect();
-                
   
  Notes for private directory installation:
-
-
- * Remember to set the PERL5LIB environment variable before installing the Perl modules and running the examples.
- PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first look for
- Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above uses the csh syntax
- for setting environment variable. For sh, ksh and bash, use EXPORT PERL5LIB=/my/private/directory/lib.
+ 
+   Remember to set the PERL5LIB environment variable before installing the Perl modules and running the examples.
+   PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first
+   look for Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above
+   uses the csh syntax for setting environment variable. For sh, ksh and bash, 
+   use EXPORT PERL5LIB=/my/private/directory/lib.
  
  Support
 ===========
+If you have problems with this Net::Netconf package, please e-mail support@juniper.net. We are looking forward to hearing from you.
 
- If you have problems with this Net::Netconf package, please e-mail support@juniper.net. We are looking
- forward to hearing from you.
+Juniper Networks is registered in the U.S. Patent and Trademark Office and in other countries as a trademark of Juniper
+Networks, Inc. Internet Processor, Internet Processor II, JUNOS, JUNOScript, M5, M10, M20, M40, M160, and its corporate, product, and service logos are trademarks of Juniper Networks, Inc.  All other trademarks, service marks, registered trademarks, or registered service marks are the property of their respective owners. Use of any Juniper Networks trademarks in a manner that is likely to cause confusion among its customers or disparages/discredits Juniper Networks is strictly  prohibited.
 
-
- Juniper Networks is registered in the U.S. Patent and Trademark Office and in other countries as a trademark of Juniper
- Networks, Inc. Internet Processor, Internet Processor II, JUNOS, JUNOScript, M5, M10, M20, M40, M160, and its corporate,
- product, and service logos are trademarks of Juniper Networks, Inc.  All other trademarks, service marks, registered
- trademarks, or registered service marks are the property of their respective owners. Use of any Juniper Networks trademarks
- in a manner that is likely to cause confusion among its customers or disparages/discredits Juniper Networks is strictly
- prohibited.
-
- 
-
- Copyright (c) 2005, Juniper Networks, Inc. All Rights Reserved.
+Copyright (c) 2005, Juniper Networks, Inc. All Rights Reserved.
