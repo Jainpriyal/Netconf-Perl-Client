@@ -89,10 +89,9 @@ Supported Platforms
 Downloads
 ============
 
-       Client Perl applications can communicate with the NETCONF server via SSH only. The NETCONF Perl client needs a
-       SSH client program (like OpenSSH) installed on the system.
+Client Perl applications can communicate with the NETCONF server via SSH only. The NETCONF Perl client needs a SSH client program (like OpenSSH) installed on the system.
 
-       To download the publicly available version of the NETCONF Perl Client,perform the following steps:
+To download the publicly available version of the NETCONF Perl Client,perform the following steps:
 
          1. Access the Juniper Networks Web site at
             http://www.juniper.net/beta (for beta software) or
@@ -110,10 +109,8 @@ Installation
             Perl.
             % which perl
             % perl -v
-            The NETCONF Perl Client requires version 5.6.1 or later of the
-            perl executable. Verify that you are running that version of the
-            perl executable. If not, check your PATH or install the latest
-            release of perl.
+            The NETCONF Perl Client requires version 5.6.1 or later of the perl executable. Verify that you are running
+            that version of the perl executable. If not, check your PATH or install the latest release of perl.
 
          1. Download the NETCONF gzip archive from the Juniper Networks website. 
             For instructions, see Download.
@@ -149,15 +146,10 @@ Installation
 Running the Sample Scripts
 ==========================
 
-            The NETCONF Perl distribution includes sample scripts that
-            demonstrate how to use NETCONF to retrieve and change the
-            configuration of a Juniper Networks routing platform. The samples
-            reside in the netconf-perl-n.n/examples directory.
+The NETCONF Perl distribution includes sample scripts that demonstrate how to use NETCONF to retrieve and change the configuration of a Juniper Networks routing platform. The samples reside in the netconf-perl-n.n/examples directory.
 
-            Reading configuration: System Information
-            This example sends a <get-system-information> request to the
-            Juniper Networks routing platform and displays the result to the
-            standard output.It also shows how to parse reply from server
+Reading configuration: System Information
+This example sends a <get-system-information> request to the Juniper Networks routing platform and displays the result to the standard output.It also shows how to parse reply from server
 
             use Net::Netconf::Manager;
             print "Enter hostname\n";
@@ -202,11 +194,7 @@ Running the Sample Scripts
   
  Notes for private directory installation:
  
-   Remember to set the PERL5LIB environment variable before installing the Perl modules and running the examples.
-   PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first
-   look for Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above
-   uses the csh syntax for setting environment variable. For sh, ksh and bash, 
-   use EXPORT PERL5LIB=/my/private/directory/lib.
+Remember to set the PERL5LIB environment variable before installing the Perl modules and running the examples.PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first look for Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above uses the csh syntax for setting environment variable. For sh, ksh and bash,use EXPORT PERL5LIB=/my/private/directory/lib.
  
  Support
 ===========
