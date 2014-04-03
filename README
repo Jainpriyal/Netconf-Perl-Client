@@ -1,4 +1,5 @@
   NETCONF Perl client README
+  ==========================
 
    Contents
      * Abstract
@@ -13,6 +14,7 @@
    --------------------------------------------------------------------------
 
    Abstract
+   ========
 
    Each Juniper Networks routing platform running JUNOS Internet software
    release 7.5B1 or later supports the NETCONF API. The NETCONF API provides
@@ -39,50 +41,49 @@
    The following code segment shows how to use the Net::Netconf::Manager
    object to request information from a Juniper Networks routing platform.
    This example invokes the query called get_chassis_inventory.
-
- # Step 1: set up the query
-
- my $query = "get_chassis_inventory";
- my %queryargs = ( detail => 1 );
-
-
- # Step 2: Create a Netconf Manager object and connect to the Juniper
- Networks routing platform
-
- my %deviceinfo = (
-  access => "ssh",
-  login => "johndoe",
-  password => "secret",
-  hostname => "router11"
-  );
-  my $jnx = new Net::Netconf::Manager(%deviceinfo);
-
-  unless ( ref $jnx ) {
-         croak "ERROR: $deviceinfo{hostname}: failed to connect.\n";
-  }
-
-
-  # Step 3: send the query and receive a reply
-
-  my $res = $jnx->$query( %queryargs );
-
-
- # Step 4: check for error
-
-  if ($jnx->has_error) {
-      croak "ERROR: in processing request \n $jnx->{request} \n";
-  } else {
-
-
- # Step 5: do something with the result
-  }
-
- # Step 6: always disconnect from the server when you're done
- $jnx->disconnect();
-
-    Back to Top  
+    
+     # Step 1: set up the query
+    
+     my $query = "get_chassis_inventory";
+     my %queryargs = ( detail => 1 );
+    
+    
+     # Step 2: Create a Netconf Manager object and connect to the Juniper
+     Networks routing platform
+    
+     my %deviceinfo = (
+      access => "ssh",
+      login => "johndoe",
+      password => "secret",
+      hostname => "router11"
+      );
+      my $jnx = new Net::Netconf::Manager(%deviceinfo);
+    
+      unless ( ref $jnx ) {
+             croak "ERROR: $deviceinfo{hostname}: failed to connect.\n";
+      }
+    
+    
+      # Step 3: send the query and receive a reply
+    
+      my $res = $jnx->$query( %queryargs );
+    
+    
+     # Step 4: check for error
+    
+      if ($jnx->has_error) {
+          croak "ERROR: in processing request \n $jnx->{request} \n";
+      } else {
+    
+    
+     # Step 5: do something with the result
+      }
+    
+     # Step 6: always disconnect from the server when you're done
+     $jnx->disconnect();
 
    Documents
+   ==========
 
    The following documents are available at http://www.juniper.net/beta for
    the beta release and http://www.juniper.net/support for final release of
@@ -92,17 +93,17 @@
      * JUNOS XML API Configuration Reference
      * JUNOS XML API Operational Reference
 
-    Back to Top  
-
-   Supported Platforms
+    Supported Platforms
+    ===================
 
    The current version of this module has been tested on the following
    platforms. Later releases may support additional platforms.
 
      * Ubuntu 12.04LTS 
-        Back to Top  
+        
 
        Downloads
+       ============
 
        Client Perl applications can communicate with the NETCONF server via
        SSH only. The NETCONF Perl client needs a SSH client program (like
@@ -117,9 +118,10 @@
          1. Click on the link labeled "NETCONF API Software" on the left.
          2. Click on the link labeled "NETCONF API Client" to download the
             Net::Netconf::Manager distribution in gzip format.
-        Back to Top  
+        
 
        Installation
+       =============
         Instructions for UNIX Systems
 
          1. Make sure Perl is installed. If necessary, see Installation of
@@ -177,7 +179,7 @@
             [/my/netconf-perl-n.n]% perl Makefile.PL LIB=$PERL5LIB
             INSTALLMAN3DIR=$PERL5LIB/../man/man3
              
-         8. Install the Net::Netconf module.
+         6. Install the Net::Netconf module.
 
             [/my/netconf-perl-n.n]% make
             [/my/netconf-perl-n.n]% make install
@@ -198,9 +200,8 @@
                  % setenv PATH "$PATH/:$PERL5LIB/../bin"
                  % which xsltproc
                   
-             Back to Top  
-
-            Running the Sample Scripts
+          Running the Sample Scripts
+          ==========================
 
             The NETCONF Perl distribution includes sample scripts that
             demonstrate how to use NETCONF to retrieve and change the
@@ -262,9 +263,7 @@
              print "host-name  ". $res3. "\n";
                   
              $jnx->disconnect();
-                  
-
-  Back to Top
+                
   
  Notes for private directory installation:
 
@@ -274,15 +273,11 @@
  Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above uses the csh syntax
  for setting environment variable. For sh, ksh and bash, use EXPORT PERL5LIB=/my/private/directory/lib.
  
-  Back to Top
- 
  Support
-
+===========
 
  If you have problems with this Net::Netconf package, please e-mail support@juniper.net. We are looking
  forward to hearing from you.
-
-
 
 
  Juniper Networks is registered in the U.S. Patent and Trademark Office and in other countries as a trademark of Juniper
