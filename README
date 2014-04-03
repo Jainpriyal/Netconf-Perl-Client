@@ -7,8 +7,6 @@
      * Downloads
      * Installation
      * Running the Examples
-     * Installation of Perl
-     * Installation of Perl Modules Required by Examples
      * Dependencies
      * Support
 
@@ -266,149 +264,8 @@
              $jnx->disconnect();
                   
 
-            Changing configuration: Edit Configuration
-            This example accepts an XML configuration to load. An example
-            configuration to load is provided in config.xml. It is an XML
-            file containing the RPC requests. You can put your own
-            configuration file in the same directory and have
-            edit_configuration load it in the target routing platform for
-            you. The purpose of this example is to show you how simple it is
-            to change your routing platform configuration using NETCONF. See
-            the "NETCONF API Guide" for a detailed description of the syntax
-            to use for the configuration data you are loading via NETCONF.
-
-              1. Change directory to examples/edit_configuration
-                 [/my/netconf-perl-n.n]% cd examples/edit_configuration
-                  
-              1. Run the edit_configuration.pl script
-                 [/my/netconf-perl-n.n/examples/edit_configuration]% perl
-                 edit_configuration.pl
-                 [-d <level>]
-                 [-m <access>]
-                 [-l <login>]
-                 [-p <password>]
-                 <request>
-                 <router>
-
-             Example:
-            [/my/netconf-perl-n.n/examples/edit_configuration]% perl
-            edit_configuration.pl config.xml router11
-            login: johndoe
-            password:
-
-            Where:
-            -d <level>
-            Optional. The default level is 4 (warning).
-
-            -m <access>
-            Optional. The only allowed value is ssh. It specifies which
-            transport protocol to use to communicate with the Juniper
-            Networks routing platform.
-
-            -l <login>
-            -p <password>
-            The login identity and password to use when accessing the Juniper
-            Networks routng platform. The login identity must already exist
-            in the routing platform configuration and must have at least read
-            privilege on the routing platform. (Configure the login account
-            by using the CLI command set system login user.) If these
-            arguments are not provided on the command line, the user will be
-            prompted to enter the information.
-
-            <request>
-            Specify the name of the configuration file to be loaded. The
-            configuration file included with the example is config.xml. 
-
-            Example of configuration file content in xml format:
-
-                  <configuration>
-                      <system>
-                          <host-name>foo</host-name>
-                      </system>
-                  </configuration>
-
-
-           <router>
-           The hostname or IP address of the routing platform.
-          
-
-
- Router Diagnostics: Diagnose BGP
- This example retrieves the BGP summary from a Juniper Networks routing platform and displays key information on the unestablished
- peers. It shows how useful diagnostic tools can be written using NETCONF.
-
-
-
- You can render the output in plain text using XSLT. The output is saved in
- a file named <router>.xml which is the concatenation of the <get-bgp-summary-information>
- responses on all of the BGP peers for the target router.  Take a look at
- this XML file if you wish to write your own XSL file to render the output.
-
-
- * Change directory to examples/diagnose_bgp.
- [/my/netconf-perl-n.n]% cd examples/diagnose_bgp
-  
-
- * Run the diagnose_bgp.pl script.
-  [/my/netconf-perl-n.n/examples/diagnose_bgp]% perl diagnose_bgp.pl
-                                                           [-d <level>]
-                                                           [-m <access>]
-                                                           [-l <login>]
-                                                           [-p <password>]
-                                                           -x <xslfile>
-                                                           -o <outputfile>
-                                                           <router>
-
-
- Example:
-
- [/my/netconf-perl-n.n/examples/diagnose_bgp]% perl diagnose_bgp.pl
-                                                               -x xsl/bgp.xsl
-                                                               -o router11.html
-  login: johndoe
-  password:
-
-
-
- Where:
-
- -d<level>
- Optional. The default is debug level 4 (warning).
-
-
-
- -m <access>
- Optional. The only allowed value is ssh.
- It specifies which transport protocol to use to communicate with the Juniper Networks routing platform.
-
-
-
- -l <login>
- -p <password>
- The login identity and password to use when accessing the Juniper Networks routing platform. The login identity must already exist in
- the routing platform configuration and must have at least read privilege on the routing platform. (Configure the login account by using the CLI
- command set system login user.) If these arguments are not provided on the command line, the user will be prompted
- to enter the information.
-
- -x <xslfile>
- -o <outputfile>
- Optional.  If <xslfile> is specified, the <xslfile> is used for rendering the output.  If
- <xslfile> is not specified, xsl/bgp.xsl is used by default.  You can use this XSL file or create your own. 
- If <outputfile> is specified, the transformation is put into <outputfile>. If <outputfile> is not
- specified, the result will be displayed on the standard output. 
-
-
-
- <router>
- The hostname or IP address of the routing platform.
-
-
-
   Back to Top
   
-
-
- 
  Notes for private directory installation:
 
 
