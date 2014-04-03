@@ -1,5 +1,5 @@
-  NETCONF Perl client README
-  ==========================
+  NETCONF Perl client
+  ===================
 
    Contents
      * Abstract
@@ -10,8 +10,6 @@
      * Running the Examples
      * Dependencies
      * Support
-
-   --------------------------------------------------------------------------
 
    Abstract
    ========
@@ -93,8 +91,8 @@
      * JUNOS XML API Configuration Reference
      * JUNOS XML API Operational Reference
 
-    Supported Platforms
-    ===================
+   Supported Platforms
+   ===================
 
    The current version of this module has been tested on the following
    platforms. Later releases may support additional platforms.
@@ -102,8 +100,8 @@
      * Ubuntu 12.04LTS 
         
 
-       Downloads
-       ============
+   Downloads
+   ============
 
        Client Perl applications can communicate with the NETCONF server via
        SSH only. The NETCONF Perl client needs a SSH client program (like
@@ -120,8 +118,8 @@
             Net::Netconf::Manager distribution in gzip format.
         
 
-       Installation
-       =============
+   Installation
+   =============
         Instructions for UNIX Systems
 
          1. Make sure Perl is installed. If necessary, see Installation of
@@ -200,8 +198,8 @@
                  % setenv PATH "$PATH/:$PERL5LIB/../bin"
                  % which xsltproc
                   
-          Running the Sample Scripts
-          ==========================
+   Running the Sample Scripts
+   ==========================
 
             The NETCONF Perl distribution includes sample scripts that
             demonstrate how to use NETCONF to retrieve and change the
