@@ -8,7 +8,6 @@ NETCONF Perl client
          * Downloads
          * Installation
          * Running the Examples
-         * Dependencies
          * Support
 
 Abstract
