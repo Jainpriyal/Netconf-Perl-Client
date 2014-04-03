@@ -1,7 +1,5 @@
   NETCONF Perl client README
 
-   Version 13.2R3
-
    Contents
      * Abstract
      * Documents
@@ -30,8 +28,7 @@
    applications that monitor and configure Juniper Networks routers. There
    are many modules in the Comprehensive Perl Archival Network (CPAN,
    http://www.cpan.org) and other Perl source repositories that provide ways
-   to manipulate XML data (for example, the XML::Parser, and XML::DOM
-   modules).
+   to manipulate XML data (for example, the XML::LibXML modules).
 
    The Net::Netconf::Manager module provides an object-oriented interface for
    communicating with the NETCONF server so you can start using the NETCONF
@@ -97,12 +94,6 @@
      * JUNOS XML API Configuration Reference
      * JUNOS XML API Operational Reference
 
-   The following classes provide perldoc to describe their interfaces. Run
-   man <class> after the installation is complete.
-
-     * Net::Netconf::Manager
-     * Net::Netconf::Transform
-     * Net::Netconf::Trace
     Back to Top  
 
    Supported Platforms
@@ -110,7 +101,7 @@
    The current version of this module has been tested on the following
    platforms. Later releases may support additional platforms.
 
-     * FreeBSD 4.10
+     * Ubuntu 12.04LTS 
         Back to Top  
 
        Downloads
@@ -128,9 +119,6 @@
          1. Click on the link labeled "NETCONF API Software" on the left.
          2. Click on the link labeled "NETCONF API Client" to download the
             Net::Netconf::Manager distribution in gzip format.
-         3. Click on the link "NETCONF API Client Prerequisites" to download
-            the distribution containing the C libraries and Perl modules
-            required by Net::Netconf::Manager and its samples.
         Back to Top  
 
        Installation
@@ -158,19 +146,8 @@
 
          3. Change to the NETCONF directory.
             % cd netconf-perl-n.n
-             
-         4. Download the gzip archive of the prerequisite library and modules
-            from the Juniper Networks Web site in a directory called prereqs,
-            which must be directly under the netconf-n.n directory. The
-            archive is named netconf-perl-prereqs-n.n.tar.gz where n.n is a
-            release code such as 7.5. For instructions, see Download.
-             
-         5. Unzip and untar the archive.
-
-            On FreeBSD systems:
-            [/my/netconf-perl-n.n]% tar zxf netconf-perl-prereqs-n.n.tar.gz
-
-         6. Install the required C binaries and Perl modules. If you wish to
+            
+         4. Install the prerequisites of Perl modules. If you wish to
             install the required files in your private directory instead of
             the standard directory, you can use the -install_directory option
             to specify your private installation directory. The standard
@@ -179,25 +156,19 @@
             /usr/local/lib, and you'll need root privilege to install modules
             in these directories.
 
-            If installing modules under the standard directory (normally
-            /usr/local/lib and you'll need root privilege):
-            [/my/netconf-perl-n.n]% perl install-prereqs.pl -force
-
-            Installing modules under your own private directory (see notes
-            below):
-            [/my/netconf-perl-n.n]% setenv PERL5LIB /my/private/directory/lib
-            [/my/netconf-perl-n.n]% setenv MANPATH
-            "$MANPATH/:$PERL5LIB/../man"
-            [/my/netconf-perl-n.n]% setenv PATH "$PATH/:$PERL5LIB/../bin"
-            [/my/netconf-perl-n.n]% perl install-prereqs.pl
-            -install_directory $PERL5LIB -force
-
-            The option -force forces install-prereqs.pl to install a module
-            even if an older version already exists or make test fails. For
-            more information on the install-prereqs.pl options, type perl
-            install-prereqs.pl -help.
-             
-         7. Create Net::Netconf makefile.
+            Following are the prerequites
+            1. Expect Module
+            2. File::Which
+            3. XML::LibXML
+            
+            Steps to install Prerequities in Ubuntu12.04LTS :
+            1. apt-get install tcl tcl-dev tk tk-dev
+            2. apt-get install expect expect-dev
+            3. perl -MCPAN -e 'install Bundle::Expect'
+            4. cpan File::Which
+            5. cpan XML::LibXML
+          
+         5. Create Net::Netconf makefile.
 
             If installing Net::Netconf::Manager under the standard directory
             (it's normally /usr/local/lib):
@@ -238,63 +209,62 @@
             configuration of a Juniper Networks routing platform. The samples
             reside in the netconf-perl-n.n/examples directory.
 
-            Reading configuration: Chassis Inventory
-            This example sends a <get-chassis-information> request to the
+            Reading configuration: System Information
+            This example sends a <get-system-information> request to the
             Juniper Networks routing platform and displays the result to the
-            standard output. It uses XSLT to display the result in plain
-            text. The purpose of this example is to show the power and
-            flexibility of combining the NETCONF and XSLT.
+            standard output.It also shows how to parse reply from server
+            
+            
+            use Net::Netconf::Manager;
 
-              1. Change directory to examples/get_chassis_inventory.
-                 [/my/netconf-perl-n.n]% cd examples/get_chassis_inventory
+            print "Enter hostname\n";
+            my $hostname = <>;
+            print "Enter username\n";
+            my $login= <>;
+            print "Enter password\n";
+            my $pass = <>;
+            chomp($hostname);
+            chomp($login);
+            chomp($pass);
+            $jnx = new Net::Netconf::Manager( 'access' => 'ssh',
+                          'login' => $login,
+                          'password' => $pass,
+                          'hostname' => $hostname);
                   
-              1. Run the script get_chassis_inventory.pl.
-                 [/my/netconf-perl-n.n/examples/get_chassis_inventory]% perl
-                 get_chassis_inventory.pl
-                 [-d <level>]
-                 [-o <outputfile>]
-                 [-x <xslfile>]
-                 [-m <access>]
-                 [-l <login>]
-                 [-p <password>]
-                 <router>
-
-            Example:
-            [/my/netconf-perl-n.n/examples/get_chassis_inventory]% perl
-            get_chassis_inventory.pl router11
-            login: johndoe
-            password:
-
-            Where:
-            -d <level>
-            Optional. The default is debug level 4 (warning).
-
-            -x <xslfile>
-            -o <outputfile>
-            Optional.  If <xslfile> is specified, the <xslfile> is used for
-            rendering the output.  If <xslfile> is not specified,
-            xsl/chassis_inventory.xsl is used by default.  If <outputfile> is
-            specified, the transformation is put into <outputfile>. If
-            <outputfile> is not specified, the result will be displayed on
-            the standard output. 
-
-            -m <access>
-            Optional. The only supported value is ssh. It specifies which
-            transport protocol to use to communicate with the Juniper
-            Networks routing platforn.
-
-            -l <login>
-            -p <password>
-            The login identity and password to use when accessing the Juniper
-            Networks routing platform. The login identity must already exist
-            in the router configuration and must have at least read privilege
-            on the routing platform. (Configure the login account by using
-            the CLI command set system login user.) If these arguments are
-            not provided on the command line, the user will be prompted to
-            enter the information.
-
-            <router>
-            The hostname or IP address of the routing platform.
+            if(! $jnx ) {
+                  print STDERR "Unable to connect to Junos device \n";
+                  exit 1;
+             }
+                  
+             print "Connection established: " . $jnx->get_session_id . "\n";
+                  
+             my $reply=$jnx->get_system_information();
+                  
+             if ($jnx->has_error) {
+             print "ERROR: in processing request\n";
+             # Get the error
+             my $error = $jnx->get_first_error();
+             $jnx->print_error_info(%$error);
+             exit 1;
+             }
+                  
+             print "Rpc reply from server.\n";
+             print ">>>>>>>>>>\n";
+             print $reply;
+             print "<<<<<<<<<<\n";
+                  
+             #parsing reply from server
+             my $config= $jnx->get_dom();
+             $res= $config->getElementsByTagName("hardware-model")->item(0)->getFirstChild->getData;
+             $res2= $config->getElementsByTagName("os-name")->item(0)->getFirstChild->getData;
+             $res3= $config->getElementsByTagName("host-name")->item(0)->getFirstChild->getData;
+                  
+             print "\nhardware information  ". $res ."\n";
+             print "os-name  " .$res2 . "\n";
+             print "host-name  ". $res3. "\n";
+                  
+             $jnx->disconnect();
+                  
 
             Changing configuration: Edit Configuration
             This example accepts an XML configuration to load. An example
@@ -320,7 +290,7 @@
                  <request>
                  <router>
 
-            Example:
+             Example:
             [/my/netconf-perl-n.n/examples/edit_configuration]% perl
             edit_configuration.pl config.xml router11
             login: johndoe
@@ -358,9 +328,9 @@
                   </configuration>
 
 
- <router>
- The hostname or IP address of the routing platform.
-
+           <router>
+           The hostname or IP address of the routing platform.
+          
 
 
  Router Diagnostics: Diagnose BGP
@@ -438,51 +408,7 @@
   
 
 
- Installation of Perl Modules Required by Examples
-
-
- You can tell install-prereqs.pl to install only the modules required by Net::Netconf::Manager or by a specific example. By
- default install-prereqs.pl install all required modules for Net::Netconf::Manager, get_chassis_inventory.pl,
- edit_configuration.pl and diagnose_bgp.pl. This section shows you how to specify which set of modules to install.
-
-        
- UNIX
-        
- * Go to the netconf directory.
-         % cd netconf-perl-n.n
-  
-        
- * Install the Perl modules required by the specific example. If you wish to install the
-         required files in your private directory instead of the standard directory, you can use the -install_directory option
-         to specify your private installation directory. The standard directory is the installation directory configured in
-         the perl executable. 
-         Installing modules under the standard directory (it's normally /usr/local/lib and you'll need root
-         privilege):
  
-         [/my/netconf-perl-n.n]% perl install-prereqs.pl
-                                            -used_by <example>
-                                            -force
-        
-
-         Installing modules under your own private directory
-         (see notes below):
-         [/my/netconf-perl-n.n]% setenv PERL5LIB /my/private/directory/lib
-         [/my/netconf-perl-n.n]% perl install-prereqs.pl
-                                        -used_by <example> 
-                                        -install_directory $PERL5LIB\
-                                        -force
-        
-        
-
-         Where <example> is get_chassis_inventory, edit_configuration, diagnose_bgp, or Net::Netconf::Manager. If the
-         -used_by option is not used, the default is to install all required modules. 
-
- 
-         The option -force forces install-prereqs.pl to install the module even if an older version already exists or 'make
-         test' fails. For more information on the install-prereqs.pl options, type 'perl install-prereqs.pl -help'.
-
-
-
  Notes for private directory installation:
 
 
@@ -490,32 +416,9 @@
  PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first look for
  Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above uses the csh syntax
  for setting environment variable. For sh, ksh and bash, use EXPORT PERL5LIB=/my/private/directory/lib.
-  
-
-
-
+ 
   Back to Top
-  
-
-
- Dependencies
-
-
- When you run the install script, you'll see the list of C libraries, executables, and Perl modules required by
- Net::Netconf::Manager and its examples. 
-
- If you wish to find out what are missing dependencies on your system without running the install script, you can run the
- following commands. 
-
- perl required-mod.pl
-
-
-
-
-  Back to Top
-  
-
-
+ 
  Support
 
 
