@@ -41,7 +41,6 @@ Abstract
    This example invokes the query called get_chassis_inventory.
     
      # Step 1: set up the query
-    
      my $query = "get_chassis_inventory";
      my %queryargs = ( detail => 1 );
      # Step 2: Create a Netconf Manager object and connect to the Juniper
@@ -65,7 +64,6 @@ Abstract
       else {
      # Step 5: do something with the result
       }
-    
      # Step 6: always disconnect from the server when you're done
      $jnx->disconnect();
 
@@ -92,12 +90,10 @@ Supported Platforms
 Downloads
 ============
 
-       Client Perl applications can communicate with the NETCONF server via
-       SSH only. The NETCONF Perl client needs a SSH client program (like
-       OpenSSH) installed on the system.
+       Client Perl applications can communicate with the NETCONF server via SSH only. The NETCONF Perl client needs a
+       SSH client program (like OpenSSH) installed on the system.
 
-       To download the publicly available version of the NETCONF Perl Client,
-       perform the following steps:
+       To download the publicly available version of the NETCONF Perl Client,perform the following steps:
 
          1. Access the Juniper Networks Web site at
             http://www.juniper.net/beta (for beta software) or
@@ -120,60 +116,36 @@ Installation
             perl executable. If not, check your PATH or install the latest
             release of perl.
 
-         1. Download the NETCONF gzip archive from the Juniper Networks
-            website. The archive is named netconf-perl-n.n.tar.gz, where n.n
-            is a release code such as 7.5. For instructions, see Download.
+         1. Download the NETCONF gzip archive from the Juniper Networks website. 
+            For instructions, see Download.
          2. Unzip and untar the archive.
             On FreeBSD systems:
             % tar zxf netconf-perl-n.n.tar.gz
          3. Change to the NETCONF directory.
             % cd netconf-perl-n.n
-         4. Install the prerequisites of Perl modules. If you wish to
-            install the required files in your private directory instead of
-            the standard directory, you can use the -install_directory option
-            to specify your private installation directory. The standard
-            directory is the installation directory configured in the perl
-            executable. Usually, the standard directory is /usr/lib or
-            /usr/local/lib, and you'll need root privilege to install modules
-            in these directories.
+         4. Install the prerequisites of Perl modules. 
             Following are the prerequites
             1. Expect Module
             2. File::Which
             3. XML::LibXML
         
-            Steps to install Prerequities in Ubuntu12.04LTS :
+            Steps to install Prerequisites in Ubuntu12.04LTS :
             1. apt-get install tcl tcl-dev tk tk-dev
             2. apt-get install expect expect-dev
             3. perl -MCPAN -e 'install Bundle::Expect'
             4. cpan File::Which
             5. cpan XML::LibXML
+            
+            After successfully installing Prerequisites install NETCONF PERL CLIENT
           
          5. Create Net::Netconf makefile.
             If installing Net::Netconf::Manager under the standard directory
             (it's normally /usr/local/lib):
             [/my/netconf-perl-n.n]% perl Makefile.PL
-            If installing Net::Netconf::Manager under your own private
-            directory:
-            [/my/netconf-perl-n.n]% perl Makefile.PL LIB=$PERL5LIB
-            INSTALLMAN3DIR=$PERL5LIB/../man/man3
              
          6. Install the Net::Netconf module.
             [/my/netconf-perl-n.n]% make
             [/my/netconf-perl-n.n]% make install
-  
-            Notes for private directory installation:
-           * If you are installing the NETCONF modules in a private
-             directory, remember to set the PERL5LIB, MANPATH, and PATH
-             environment variables before installing the Perl modules and
-             running the examples. If the PERL5LIB variable is set, perl
-             will first look for Perl modules in the specified directory
-             before looking in the standard directory. (If you're using
-             sh, ksh or bash, use EXPORT instead of setenv.)
-
-             % setenv MANPATH "$MANPATH/:$PERL5LIB/../man"
-             % man Net::Netconf::Manager
-             % setenv PATH "$PATH/:$PERL5LIB/../bin"
-             % which xsltproc
                   
 Running the Sample Scripts
 ==========================
