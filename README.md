@@ -179,5 +179,3 @@ This example sends a <get-system-information> request to the Networks routing pl
  Notes for private directory installation:
  
 Remember to set the PERL5LIB environment variable before installing the Perl modules and running the examples.PERL5LIB is an environment variable, it can be set to a colon-separated list of directories. If set, perl will first look for Perl modules in the PERL5LIB directories before looking in the standard directory. The instruction above uses the csh syntax for setting environment variable. For sh, ksh and bash,use EXPORT PERL5LIB=/my/private/directory/lib.
-
-Copyright (c) 2005, Juniper Networks, Inc. All Rights Reserved.
