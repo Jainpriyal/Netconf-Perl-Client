@@ -1,30 +1,4 @@
-# This Makefile is for the netconf-perl extension to perl.
-#
-# It was generated automatically by MakeMaker version
-# 6.57_05 (Revision: 65705) from the contents of
-# Makefile.PL. Don't edit this file, edit Makefile.PL instead.
-#
-#       ANY CHANGES MADE HERE WILL BE LOST!
-#
-#   MakeMaker ARGV: ()
-#
 
-#   MakeMaker Parameters:
-
-#     ABSTRACT => q[netconf libraries for perl]
-#     AUTHOR => [q[Juniper Networks, Inc]]
-#     BUILD_REQUIRES => {  }
-#     NAME => q[netconf-perl]
-#     PREREQ_PM => {  }
-#     VERSION_FROM => q[Makefile.PL]
-
-# --- MakeMaker post_initialize section:
-
-
-# --- MakeMaker const_config section:
-
-# These definitions are from config.sh (via /usr/lib/perl/5.14/Config.pm).
-# They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
 CCCDLFLAGS = -fPIC
