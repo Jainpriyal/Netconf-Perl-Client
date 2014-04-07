@@ -692,13 +692,3 @@ sub toString {
     my $self = shift;
     return $self->{I_AM_NODE}->toString(1);
 }
-
-=head1 COPYRIGHT
-
-    Copyright (c) 2010, Juniper Networks, Inc.
-    All rights reserved.
-
-=cut
-
-
-
