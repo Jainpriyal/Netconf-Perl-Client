@@ -101,3 +101,6 @@ displayed on STDOUT only if level is greater than the trace level selected.
 =head1 SEE ALSO
 
 =head1 AUTHOR
+
+Juniper Networks Perl Team, send bug reports, hints, tips and suggestions to
+netconf-support@juniper.net

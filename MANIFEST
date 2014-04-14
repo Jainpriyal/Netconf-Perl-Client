@@ -1,0 +1,23 @@
+# Manifest file
+
+# Junos_XML_API_Day_One_Training_Workshop.pdf
+README
+MANIFEST
+CHANGES
+Makefile.PL
+examples/diagnose_bgp/diagnose_bgp.pl
+examples/diagnose_bgp/xsl/bgp.xsl
+examples/edit_configuration/edit_configuration.pl
+examples/edit_configuration/config.txt
+examples/edit_configuration/config.xml
+examples/get_chassis_inventory/get_chassis_inventory.pl
+examples/get_chassis_inventory/xsl/chassis_inventory.xsl
+Net/Netconf/EzEditXML.pm
+Net/Netconf/Access.pm
+Net/Netconf/Constants.pm
+Net/Netconf/Device.pm
+Net/Netconf/Manager.pm
+Net/Netconf/SAXHandler.pm
+Net/Netconf/Trace.pm
+Net/Netconf/Access/ssh.pm
+

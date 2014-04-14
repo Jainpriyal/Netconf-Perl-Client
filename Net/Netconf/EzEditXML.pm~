@@ -1,15 +1,14 @@
-
-package JUNOS::EzEditXML;
+package Net::Netconf::EzEditXML;
 
 =head1 NAME
 
-JUNOS::EzEditXML - Create XML for JUNOS XML API the Easy Way!
+Net::Netconf::EzEditXML - Create XML for JUNOS XML API the Easy Way!
 
 =head1 SYNOPSIS
 
- use JUNOS::EzEditXML;
+ use Net::Netconf::EzEditXML;
 
- $newEzElem = new JUNOS::EzEditXML( [$elemName] );
+ $newEzElem = new Net::Netconf::EzEditXML( [$elemName] );
 
  $ezElem->toString;
  $newEzElem = $ezElem->AUTOLOAD;
@@ -23,7 +22,7 @@ JUNOS::EzEditXML - Create XML for JUNOS XML API the Easy Way!
 
 =head1 DESCRIPTION
 
-JUNOS::EzEditXML is used to create XML documents used for the purpose
+Net::Netconf::EzEditXML is used to create XML documents used for the purpose
 of JUNOS device configuration and performing operational commands.
 EzEditXML is a 'syntatic sugar wrapper' around the XML::LibXML
 library.  EzEditXML does not communicate with the JUNOS target
@@ -52,7 +51,7 @@ require Exporter;
 
 =over 2
 
-$newEzElem = new JUNOS::EzEditXML( [$elemName] );
+$newEzElem = new Net::Netconf::EzEditXML( [$elemName] );
 
 =back
 
@@ -272,7 +271,7 @@ sub addElement {
 
     my $ezE = (ref $elem)
 	? $elem
-	: newElement JUNOS::EzEditXML( $elem, $children );
+	: newElement Net::Netconf::EzEditXML( $elem, $children );
 
     $self->{I_AM_NODE}->appendChild( $ezE->{I_AM_NODE} );
 
@@ -320,7 +319,7 @@ sub addPath {
     # level has associated subelements defined, then link them in now.
 
     foreach (@dirs) {
-	$ezE = newElement JUNOS::EzEditXML( $_ );
+	$ezE = newElement Net::Netconf::EzEditXML( $_ );
 	push @ezElems, $ezE;
 
 	if($elemHash{$_}) {

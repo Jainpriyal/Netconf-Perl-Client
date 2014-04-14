@@ -1,34 +1,4 @@
-#
-# $Id: Device.pm,v 1.7 2006-01-16 22:40:56 sudeshna Exp $
-#
-# Copyright (c) 2005-2009, Juniper Networks, Inc.
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-#      1.      Redistributions of source code must retain the above
-# copyright notice, this list of conditions and the following
-# disclaimer.
-#      2.      Redistributions in binary form must reproduce the above
-# copyright notice, this list of conditions and the following disclaimer
-# in the documentation and/or other materials provided with the
-# distribution.
-#      3.      The name of the copyright owner may not be used to
-# endorse or promote products derived from this software without specific
-# prior written permission.
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
-# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-#
+# Net::Netconf::Device - Implements a remote Netconf device
 
 package Net::Netconf::Device;
 use strict;
@@ -47,6 +17,7 @@ require Exporter;
 use vars qw(@EXPORT);
 use vars qw(@ISA);
 use vars qw($AUTOLOAD);
+our $VERSION = '0.01';
 
 my $NO_ARGS = bless {}, 'NO_ARGS';
 my $TOGGLE = bless { 1 => 1 }, 'TOGGLE';
@@ -67,11 +38,9 @@ my %methods = (
 	'type' => $STRING,
 	'namespace' => $STRING
     },
-
     'get' => {
         filter => $DOM
     },
-
     'lock_config' => {
         'tag_name' => 'lock',
         'target'  => $DOM_STRING,
@@ -120,9 +89,10 @@ my %methods = (
         'source' => $DOM_STRING,
         'source_url' => $URL_STRING,
    },
-'get_database_status_information' => $NO_ARGS,
+   'get_database_status_information' => $NO_ARGS,
 );
 
+#client's capabilities
 my %capabilities = (
     'urn:ietf:params:xml:ns:netconf:base:1.0' =>
         [ 'get', 'get_config', 'edit_config', 'copy_config', 'delete_config',
@@ -134,6 +104,7 @@ my %capabilities = (
     'urn:ietf:params:xml:ns:netconf:capability:url:1.0?protocol=http,ftp,file' => [],
 );
 
+# get the message id
 sub get_msg_id {
     return $message_id++;
 }
@@ -151,14 +122,12 @@ sub new
     croak 'missing information <password>' unless exists $args{'password'};
 
     # SAX Parser
-   my $handler = new Net::Netconf::SAXHandler('ErrorContext' => 5);
-   my $saxparser = new XML::LibXML::SAX::Parser('Handler' => $handler)
+    my $handler = new Net::Netconf::SAXHandler('ErrorContext' => 5);
+    my $saxparser = new XML::LibXML::SAX::Parser('Handler' => $handler)
                  || croak 'Cannot create parser: ' . $!;
-  $self->{'sax_parser'} = $saxparser;
+    $self->{'sax_parser'} = $saxparser;
 
     # DOM parser
-    #my $domparser = new XML::DOM::Parser;
-    #$self->{'dom_parser'} = $domparser;
     my $domparser = XML::LibXML->new();
     $self->{'dom_parser'}= $domparser;
 
@@ -168,6 +137,7 @@ sub new
 
     # Connection state
     $self->{'conn_state'} = Net::Netconf::Constants::NC_STATE_DISCONN;
+    
     # Default trace level: WARNING_LEVEL
     $self->{'debug_level'} = Net::Netconf::Trace::WARNING_LEVEL unless
     $self->{'debug_level'};
@@ -175,7 +145,7 @@ sub new
     # Create the trace object
     $self->{'trace_obj'} = new Net::Netconf::Trace($self->{'debug_level'});
 
-     # Now bring up the connection
+    # Now bring up the connection
     return $self->connect() unless $self->{'do_not_connect'};
     $self;
 }
@@ -228,8 +198,6 @@ sub send_and_recv_hello
     my $traceobj = $self->{'trace_obj'};
     my @server_capabilities;
 
-    $self->{'client_version'} = substr($version, 0, 3);
-
     # Generate the client capability using the capabilities passed to it
     my $client_capability = <<EOF;
 <hello>
@@ -271,11 +239,11 @@ EOF
 
     # Parse the server hello to extract the capabilities
  
- eval {
+     eval {
         $self->{'sax_parser'}->parse_string($server_cap);
-  };
+};
 
- if ($@) {
+    if ($@) {
     $self->report_error(1, 'error in parsing server capability');
  }
 
@@ -313,7 +281,6 @@ sub disconnect
 # $endtag = we should read data till we find this tag (optional)
 # $state_sent = state after we sent the data (optional)
 # $state_recv = state after we receive data (optional)
-
 sub send_and_recv_rpc
 {
 my($self, $xml, $endtag, $state_sent, $state_recv) = @_;
@@ -501,7 +468,7 @@ sub generate_rpc
     my $tag = "";
     my $attrs = "";
     my $url = "";
-     my $msg_id = &get_msg_id;
+    my $msg_id = &get_msg_id;
 
     foreach my $field (keys(%args)) {
 	my $type = $bindings->{ $field };
@@ -533,7 +500,7 @@ sub generate_rpc
             } else {
                 $output .= "    <${tag}><${value}/></${tag}>\n";
             }
-	}elsif ($type =~ /(\d)+\.\.(\d)+/) {
+       	}elsif ($type =~ /(\d)+\.\.(\d)+/) {
 	    $output .= "    <${tag}>${value}</${tag}>\n";
 
 	} elsif (ref($type) eq 'DOM') {
@@ -551,19 +518,20 @@ sub generate_rpc
 	    $output .= "    <${tag}>${value}</${tag}>\n";
 	}
     }
- if ($bindings->{'tag_name'}) {
+ 	if ($bindings->{'tag_name'}) {
         $fn = $bindings->{'tag_name'};
     }
+	
+	($tag = $fn) =~ s/_/-/g;
 
-    ($tag = $fn) =~ s/_/-/g;
-
- if ($output) {
+        if ($output) {
 	$output = "<rpc message-id=\'$msg_id\'>\n  <${tag}${attrs}>\n${output}  </${tag}>\n</rpc>\n";
-    } else {
+    } 
+        else {
 	$output = "<rpc message-id=\'$msg_id\'>\n  <${tag}${attrs}/>\n</rpc>\n";
     }
-$self->{'request'} = $output;
-$self->send_and_recv_rpc($output);
+       $self->{'request'} = $output;
+       $self->send_and_recv_rpc($output);
 }
 
 # This will be removed after the <get-config> accepts parameters in any order
@@ -584,7 +552,7 @@ sub get_config
     }
     $request .= $args{filter};
     $request .= '</get-config> </rpc>';
-$self->send_and_recv_rpc($request);
+    $self->send_and_recv_rpc($request);
 }
 
 # This will be removed after the <edit-config> accepts parameters in any order
@@ -782,19 +750,6 @@ Access method - can be 'ssh' only.
 
 The server to connect to. Default is 'netconf'.
 
-=item version_check
-
-By default, we do not do version check. This behavior can be changed by setting
-version_check = 1. This enables version check feature.
-
-=item vers_min
-
-Minimum version of JUNOS you want to talk to. Default is 7.5.
-
-=item vers_max
-
-Maximum version of JUNOS you want to talk to.
-
 =item debug_level
 
 The debugging level. Debug level = 1, Trace level = 2, Information level = 3,
@@ -849,9 +804,5 @@ Net::Netconf:Trace
 =head1 AUTHOR
 
 Juniper Networks Perl Team, send bug reports, hints, tips and suggestions to
-support@juniper.net.
+netconf-support@juniper.net.
 
-=head1 COPYRIGHT
-
-Copyright (c) 2005, Juniper Networks, Inc.
-All rights reserved.
