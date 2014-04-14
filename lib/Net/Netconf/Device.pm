@@ -1,5 +1,36 @@
-package Net::Netconf::Device;
+#
+# $Id: Device.pm,v 1.7 2006-01-16 22:40:56 sudeshna Exp $
+#
+# Copyright (c) 2005-2009, Juniper Networks, Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#      1.      Redistributions of source code must retain the above
+# copyright notice, this list of conditions and the following
+# disclaimer.
+#      2.      Redistributions in binary form must reproduce the above
+# copyright notice, this list of conditions and the following disclaimer
+# in the documentation and/or other materials provided with the
+# distribution.
+#      3.      The name of the copyright owner may not be used to
+# endorse or promote products derived from this software without specific
+# prior written permission.
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
 
+package Net::Netconf::Device;
 use strict;
 use Net::Netconf::Trace;
 use Net::Netconf::Constants;
@@ -12,7 +43,6 @@ use File::Basename;
 use Carp;
 no strict 'subs';
 require Exporter;
-
 
 use vars qw(@EXPORT);
 use vars qw(@ISA);
@@ -196,7 +226,6 @@ sub send_and_recv_hello
     my $msg;
     my $conn = $self->{'conn_obj'};
     my $traceobj = $self->{'trace_obj'};
-    my $version = $self->{'version'} || $Net::Netconf::Version::VERSION;
     my @server_capabilities;
 
     $self->{'client_version'} = substr($version, 0, 3);
@@ -533,6 +562,7 @@ sub generate_rpc
     } else {
 	$output = "<rpc message-id=\'$msg_id\'>\n  <${tag}${attrs}/>\n</rpc>\n";
     }
+$self->{'request'} = $output;
 $self->send_and_recv_rpc($output);
 }
 
@@ -734,7 +764,7 @@ The constructor accepts a hash table %ARGS containing the following keys:
 
 =item hostname
 
-Name of box to connect to.
+Name of Juniper box to connect to.
 
 =item login
 
@@ -817,3 +847,11 @@ Net::Netconf:Trace
 
 =back
 =head1 AUTHOR
+
+Juniper Networks Perl Team, send bug reports, hints, tips and suggestions to
+support@juniper.net.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2005, Juniper Networks, Inc.
+All rights reserved.

@@ -122,6 +122,7 @@ sub start
 
 sub send
 {
+# print "\n\n^^^^^^^^^^^inside ssh send method ^^^^^^^^^^^^^^\n\n";
     my ($self, $xml) = @_;
     my $ssh = $self->{'ssh_obj'};
     $xml .= ']]>]]>';
@@ -131,7 +132,9 @@ sub send
 
 sub recv
 {
-    my $self = shift;
+
+# print "\n\n^^^^^^^^^^^inside ssh recv method ^^^^^^^^^^^^^^\n\n";
+     my $self = shift;
     my $xml;
     my $ssh = $self->{'ssh_obj'};
     if ($ssh->expect(600, ']]>]]>')) {

@@ -1,51 +1,3 @@
-#
-# $Id: edit_configuration.pl,v 1.3 2005-12-21 18:47:11 sudeshna Exp $
-#
-# Copyright (c) 2005-2009, Juniper Networks, Inc.
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-#      1.      Redistributions of source code must retain the above
-# copyright notice, this list of conditions and the following
-# disclaimer.
-#      2.      Redistributions in binary form must reproduce the above
-# copyright notice, this list of conditions and the following disclaimer
-# in the documentation and/or other materials provided with the
-# distribution.
-#      3.      The name of the copyright owner may not be used to
-# endorse or promote products derived from this software without specific
-# prior written permission.
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
-# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-# IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-#
-
-################################################################
-# edit_configuration.pl
-# 
-# Description:
-#    Load a configuration given in some XML or text file.
-#    Steps:
-#      Lock the candidate database
-#      Load the configuration
-#      Commit the changes
-#        On failure:
-#          - discard the changes made
-#       
-#      Unlock the candidate database
-#      Disconnect from the Netconf server
-# ##############################################################
-
 use Carp;
 use Getopt::Std;
 use Net::Netconf::Manager;
@@ -141,30 +93,8 @@ sub graceful_shutdown
    } else {
        print "REQUEST failed !!\n";
    }
+
    exit;
-}
-
-#################################################################
-# read_xml_file
-#
-# Description:
-#   Open a file for reading, read and return its contents; Skip
-#   xml header if exists
-#################################################################
-sub read_xml_file
-{
-    my $input_file = shift;
-    my $input_string = "";
-
-    open(FH, $input_file) || return;
-
-    while(<FH>) {
-        next if /<\?xml.*\?>/;
-        $input_string .= $_;
-    }
-
-    close(FH);
-    return $input_string;
 }
 
 ################################################################
@@ -176,13 +106,13 @@ sub read_xml_file
 sub get_error_info
 {
     my %error = @_;
+
     print "\nERROR: Printing the server request error ...\n";
 
     # Print 'error-severity' if present
     if ($error{'error_severity'}) {
         print "ERROR SEVERITY: $error{'error_severity'}\n";
     }
-
     # Print 'error-message' if present
     if ($error{'error_message'}) {
         print "ERROR MESSAGE: $error{'error_message'}\n";
@@ -200,48 +130,35 @@ sub get_error_info
 
 # Set AUTOFLUSH to true
 $| = 1;
-
-# get the user input and display usage on error 
-# or when user wants help
-my %opt;
-getopts('l:p:d:m:ht', \%opt) || output_usage();
-output_usage() if $opt{'h'};
-
-# Retrieve command line arguments for the XML file name
-my $xmlfile = shift || output_usage();
-
+getopts('t:');
 my $jnx = new Net::Netconf::Manager( 'access' => 'ssh',
         'login' => 'regress',
         'password' => 'MaRtInI',
         'hostname' => '10.209.16.204');
-print "\n reply from server\n";
 
 unless (ref $jnx) {
     croak "ERROR: $deviceinfo{hostname}: failed to connect.\n";
 }
 
+my $input_string=" ";
+my $textfile = our $opt_t;
+open(FH, $textfile) || return;
+    while(<FH>) {
+        $input_string .= $_;
+    }
+close(FH);
+
+print "text file value is $input_string";
 # Lock the configuration database before making any changes
 print "Locking configuration database ...\n";
 my %queryargs = ( 'target' => 'candidate' );
 $res = $jnx->lock_config(%queryargs);
-print "\nlock-reply from server $res \n";
-
 # See if you got an error
 if ($jnx->has_error) {
     print "ERROR: in processing request \n $jnx->{'request'} \n";
     graceful_shutdown($jnx, STATE_CONNECTED, REPORT_FAILURE);
 }
 
-# Load the configuration from the given XML file
-print "Loading configuration from $xmlfile \n";
-if (! -f $xmlfile) {
-    print "ERROR: Cannot load configuration in $xmlfile\n";
-    graceful_shutdown($jnx, STATE_LOCKED, REPORT_FAILURE);    
-}
-
-# Read in the XML file
-my $config = read_xml_file($xmlfile);
-print "\nreading xml file \n\n$config \n\n";
 %queryargs = ( 
                  'target' => 'candidate'
              );
@@ -249,19 +166,13 @@ print "\nreading xml file \n\n$config \n\n";
 # If we are in text mode, use config-text arg with wrapped
 # configuration-text, otherwise use config arg with raw
 # XML
-if ($opt{t}) {
-  $queryargs{'config-text'} = '<configuration-text>' . $config
-    . '</configuration-text>';
-} else {
-  $queryargs{'config'} = $config;
-}
+  $queryargs{'config-text'} = '<configuration-text>' . $input_string . '</configuration-text>';
 
 $res = $jnx->edit_config(%queryargs);
-print "\nedit_config reply from server $res \n";
 
 # See if you got an error
 if ($jnx->has_error) {
-    print "ERROR: in processing request\n";
+    print "ERROR: in processing request \n $jnx->{'request'} \n";
     # Get the error
     my $error = $jnx->get_first_error();
     get_error_info(%$error);
@@ -271,8 +182,7 @@ if ($jnx->has_error) {
 
 # Commit the changes
 print "Committing the <edit-config> changes ...\n";
-$com=$jnx->commit();
-print "\n commit reply from server $com \n\n";
+$jnx->commit();
 if ($jnx->has_error) {
     print "ERROR: Failed to commit the configuration.\n";
     graceful_shutdown($jnx, STATE_CONFIG_LOADED, REPORT_FAILURE);
@@ -282,3 +192,5 @@ if ($jnx->has_error) {
 # disconnect from the Netconf server
 print "Disconnecting from the Netconf server ...\n";
 graceful_shutdown($jnx, STATE_LOCKED, REPORT_SUCCESS);
+
+

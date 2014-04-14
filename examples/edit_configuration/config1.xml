@@ -1,0 +1,9 @@
+
+<configuration>
+  <system>
+	<services >
+       <ftp delete = "delete"/> 
+	</services>
+  </system>
+</configuration>
+
