@@ -75,7 +75,13 @@ sub start
 	          $ssh->expect(10, 'known hosts.'); 
 	          last SWITCH;
 	      }
-	} # SWITCH      
+	} # SWITCH   
+	# If password prompted second time, it means user has give invalid password
+        if ($ssh->expect(10, 'password:', 'Password:', '-re', 'passphrase.*:'))
+        {
+            print "Failed to login to $self->{'hostname'}\n";
+            $self->{'seen_eof'} = 1;
+        }
     } 
     else {
 	if ($ssh->expect(10, '-re', '<!(.*?)>')) {
