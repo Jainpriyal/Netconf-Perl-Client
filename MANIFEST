@@ -2,12 +2,12 @@ README
 MANIFEST
 CHANGES
 Makefile.PL
-Net/Netconf/EzEditXML.pm
-Net/Netconf/Access.pm
-Net/Netconf/Constants.pm
-Net/Netconf/Device.pm
-Net/Netconf/Manager.pm
-Net/Netconf/SAXHandler.pm
-Net/Netconf/Trace.pm
-Net/Netconf/Access/ssh.pm
+lib/Net/Netconf/EzEditXML.pm
+lib/Net/Netconf/Access.pm
+lib/Net/Netconf/Constants.pm
+lib/Net/Netconf/Device.pm
+lib/Net/Netconf/Manager.pm
+lib/Net/Netconf/SAXHandler.pm
+lib/Net/Netconf/Trace.pm
+lib/Net/Netconf/Access/ssh.pm
 
