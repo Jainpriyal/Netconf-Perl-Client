@@ -10,4 +10,8 @@ lib/Net/Netconf/Manager.pm
 lib/Net/Netconf/SAXHandler.pm
 lib/Net/Netconf/Trace.pm
 lib/Net/Netconf/Access/ssh.pm
+example/test_operation.pl
+example/edit_configuration/edit_config.pl
+example/edit_configuration/config.txt
+example/edit_configuration/config.xml
 

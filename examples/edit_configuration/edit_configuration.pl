@@ -60,7 +60,7 @@ Where:
 
 Options:
 
-s:l:p:ht:x:
+s:l:p:t:x:
   -s <hostname> hostname /server name 
   -l <login>    A login name accepted by the target router
   -p <password> The password for the login name
@@ -212,8 +212,7 @@ $queryargs{'config'} = $config;
 
 }
 
-# If we are in text mode, use config-text arg with wrapped
-# configuration-text
+# If we are in text mode, use config-text arg with wrapped configuration-text
 if ($opt_t) 
 {
 my $text_file = $opt_t;
