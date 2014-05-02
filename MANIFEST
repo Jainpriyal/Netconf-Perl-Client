@@ -2,6 +2,7 @@ README
 MANIFEST
 CHANGES
 Makefile.PL
+lib/Net/Netconf.pm
 lib/Net/Netconf/EzEditXML.pm
 lib/Net/Netconf/Access.pm
 lib/Net/Netconf/Constants.pm
