@@ -12,7 +12,7 @@ lib/Net/Netconf/SAXHandler.pm
 lib/Net/Netconf/Trace.pm
 lib/Net/Netconf/Access/ssh.pm
 examples/test_operation.pl
-examples/edit_configuration/edit_config.pl
+examples/edit_configuration/edit_configuration.pl
 examples/edit_configuration/config.txt
 examples/edit_configuration/config.xml
 
