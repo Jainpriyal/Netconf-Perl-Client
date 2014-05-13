@@ -43,6 +43,7 @@ sub comment
     my $self=shift;
 }
 
+#change %rpc_errors = undef into %rpc_errors=()
 #overriding start_element class of handler
 sub start_element
 {
