@@ -180,7 +180,8 @@ Troubleshooting  (Ubuntu12.04LTS or higher version)
              apt-get install libyaml-appconfig-perl
              apt-get install libconfig-yaml-perl
         
-    If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try below  command
+    If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try 
+    below  command
              apt-get install libxml-libxml-perl
 
              
