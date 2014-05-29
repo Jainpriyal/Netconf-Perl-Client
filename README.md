@@ -3,11 +3,10 @@ NETCONF Perl client
 
        Contents
          * Abstract
-         * Documents
          * Supported Platforms
          * Downloads
          * Installation
-         * Running the Examples
+         * Running the Sample Scripts
          
 
 Abstract
@@ -69,21 +68,16 @@ Supported Platforms
 
      * Ubuntu 12.04LTS 
         
+Prerequisites
+==============
+Following are the Prerequisites for using this API:
+1. Expect Module
+2. File::Which
+3. XML::LibXML
 
-Downloads
-============
 
-Client Perl applications can communicate with the NETCONF server via SSH only. The NETCONF Perl client needs a SSH client program (like OpenSSH) installed on the system.
-
-To download the publicly available version of the NETCONF Perl Client,perform the following steps:
-
-         1. Access the Juniper Networks Web site at
-            http://www.juniper.net/beta (for beta software) or
-            http://www.juniper.net/support (for final release software).
-         1. Click on the link labeled "NETCONF API Software" on the left.
-         2. Click on the link labeled "NETCONF API Client" to download the
-            Net::Netconf::Manager distribution in gzip format.
-        
+Also make sure that your system has LibXML2 and LibXML2-dev library. If not then either install it from source package in ubuntu website or by using apt-get. 
+For more info look at the Troubleshooting 
 
 Installation
 =============
@@ -96,37 +90,37 @@ Installation
             The NETCONF Perl Client requires version 5.6.1 or later of the perl executable. Verify that you are running
             that version of the perl executable. If not, check your PATH or install the latest release of perl.
 
-         1. Download the NETCONF gzip archive from the Juniper Networks website. 
-            For instructions, see Download.
-         2. Unzip and untar the archive.
-            On FreeBSD systems:
-            % tar zxf netconf-perl-n.n.tar.gz
-         3. Change to the NETCONF directory.
-            % cd netconf-perl-n.n
-         4. Install the prerequisites of Perl modules. 
-            Following are the prerequites
-            1. Expect Module
-            2. File::Which
-            3. XML::LibXML
+        Install the prerequisites of Perl modules. 
+        Following are the prerequites
+        1. Expect Module
+        2. File::Which
+        3. XML::LibXML
         
-            Steps to install Prerequisites in Ubuntu12.04LTS :
-            1. apt-get install tcl tcl-dev tk tk-dev
-            2. apt-get install expect expect-dev
-            3. perl -MCPAN -e 'install Bundle::Expect'
-            4. cpan File::Which
-            5. cpan XML::LibXML
+        Steps to install Prerequisites in Ubuntu12.04LTS :
+        1. apt-get install tcl tcl-dev tk tk-dev
+        2. apt-get install expect expect-dev
+        3. perl -MCPAN -e 'install Bundle::Expect'
+        4. cpan File::Which
+        5. cpan XML::LibXML
             
-            After successfully installing Prerequisites install NETCONF PERL CLIENT
+        After successfully installing Prerequisites install NETCONF PERL CLIENT
           
-         5. Create Net::Netconf makefile.
-            If installing Net::Netconf::Manager under the standard directory
+        1. Download the Perl NETCONF zip archive from Juniper's Repository in github 
+            
+        2. Unzip the archive.
+            On FreeBSD systems:
+            % unzip Netconf-Perl-Client-master.zip
+        3. Change to the NETCONF directory.
+            % cd Netconf-Perl-Client-master
+        4. Create Net::Netconf makefile.
+           If installing Net::Netconf::Manager under the standard directory
             (it's normally /usr/local/lib):
-            [/my/netconf-perl-n.n]% perl Makefile.PL
+            [/my/Netconf-Perl-Client-master]% perl Makefile.PL
              
          6. Install the Net::Netconf module.
-            [/my/netconf-perl-n.n]% make
-            [/my/netconf-perl-n.n]% make install
-                  
+            [/my/Netconf-Perl-Client-master]% make
+            [/my/Netconf-Perl-Client-master]% make install
+            (to run make install user should have root permission)
 Running the Sample Scripts
 ==========================
 
@@ -166,6 +160,9 @@ This example sends a <get-system-information> request to the Networks routing pl
              print ">>>>>>>>>>\n";
              print $reply;
              print "<<<<<<<<<<\n";
+             
+             # this parsing is specifically for <get-system-information> tag
+             # you can write your own application in similar way
              #parsing reply from server
              my $config= $jnx->get_dom();
              $res= $config->getElementsByTagName("hardware-model")->item(0)->getFirstChild->getData;
@@ -175,6 +172,14 @@ This example sends a <get-system-information> request to the Networks routing pl
              print "os-name  " .$res2 . "\n";
              print "host-name  ". $res3. "\n";
              $jnx->disconnect();
-             
-             
+
+Troubleshooting  (Ubuntu12.04LTS or higher version)           
+=================
+Sometimes you may get that yaml is not installed then run following commands:
+             apt-get install libyaml-appconfig-perl
+             apt-get install libconfig-yaml-perl
+
+If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try below command
+             apt-get install libxml-libxml-perl
+
              
