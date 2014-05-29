@@ -175,11 +175,13 @@ This example sends a <get-system-information> request to the Networks routing pl
 
 Troubleshooting  (Ubuntu12.04LTS or higher version)           
 =================
-Sometimes you may get that yaml is not installed then run following commands:
+
+        Sometimes you may get that yaml is not installed then run following commands:
              apt-get install libyaml-appconfig-perl
              apt-get install libconfig-yaml-perl
-
-If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try below command
+        
+        If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try below
+        command
              apt-get install libxml-libxml-perl
 
              
