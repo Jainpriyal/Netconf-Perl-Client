@@ -68,7 +68,7 @@ Supported Platforms
 Prerequisites
 ==============
 
-   Following are the Prerequisites for using this API:
+    Following are the Prerequisites for using this API:
        1. Expect Module (it depends on tcl, tk, tcl-dev and tk-dev)
        2. File::Which
        3. XML::LibXML
