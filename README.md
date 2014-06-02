@@ -17,10 +17,6 @@ Abstract
    Language (XML) based data encoding for the configuration data as well as operations
    and messages defined in the API.
 
-   There are many modules in the Comprehensive Perl Archival Network (CPAN,
-   http://www.cpan.org) and other Perl source repositories that provide ways
-   to manipulate XML data (for example, the XML::LibXML modules).
-
    The Net::Netconf::Manager module provides an object-oriented interface for
    communicating with the NETCONF server so you can start using the NETCONF
    API quickly and easily. There are several modules in this library but
@@ -34,6 +30,7 @@ Abstract
    This example invokes the query called get_chassis_inventory.
     
      # Step 1: set up the query
+     // RPC tag <get-chassis-inventory> should be querried as below
      my $query = "get_chassis_inventory";
      my %queryargs = ( detail => 1 );
      # Step 2: Create a Netconf Manager object and connect to Networks routing platform
@@ -71,12 +68,12 @@ Supported Platforms
 Prerequisites
 ==============
 Following are the Prerequisites for using this API:
-1. Expect Module
-2. File::Which
-3. XML::LibXML
+       1. Expect Module (it depends on tcl, tk, tcl-dev and tk-dev)
+       2. File::Which
+       3. XML::LibXML
 
 
-Also make sure that your system has LibXML2 and LibXML2-dev library. If not then either install it from source package in ubuntu website or by using apt-get. 
+Also make sure that your system has libxml2 and libxml2-dev library. If not then either install it from source package in ubuntu website or by using apt-get. 
 For more info look at the Troubleshooting 
 
 Installation
@@ -92,14 +89,14 @@ Installation
 
         Install the prerequisites of Perl modules. 
         Following are the prerequites
-        1. Expect Module
+        1. Expect Module (it depends on tcl, tk, tcl-dev and tk-dev)
         2. File::Which
         3. XML::LibXML
         
         Steps to install Prerequisites in Ubuntu12.04LTS :
         1. apt-get install tcl tcl-dev tk tk-dev
         2. apt-get install expect expect-dev
-        3. perl -MCPAN -e 'install Bundle::Expect'
+        3. cpan Expect
         4. cpan File::Which
         5. cpan XML::LibXML
             
@@ -108,18 +105,17 @@ Installation
         1. Download the Perl NETCONF zip archive from Juniper's Repository in github 
             
         2. Unzip the archive.
-            On FreeBSD systems:
-            % unzip Netconf-Perl-Client-master.zip
+            % unzip netconf-Perl-master.zip
         3. Change to the NETCONF directory.
-            % cd Netconf-Perl-Client-master
-        4. Create Net::Netconf makefile.
+            % cd netconf-perl-master
+        4. Create Net::Netconf Makefile.
            If installing Net::Netconf::Manager under the standard directory
-            (it's normally /usr/local/lib):
-            [/my/Netconf-Perl-Client-master]% perl Makefile.PL
+            (by default it is /usr/local/lib):
+            [/my/netconf-perl-master]% perl Makefile.PL
              
          6. Install the Net::Netconf module.
-            [/my/Netconf-Perl-Client-master]% make
-            [/my/Netconf-Perl-Client-master]% make install
+            [/my/netconf-perl-master]% make
+            [/my/netconf-perl--master]% make install
             (to run make install user should have root permission)
 Running the Sample Scripts
 ==========================
@@ -175,13 +171,38 @@ This example sends a <get-system-information> request to the Networks routing pl
 
 Troubleshooting  (Ubuntu12.04LTS or higher version)           
 =================
-
-    Sometimes you may get that yaml is not installed then run following commands:
+    1. Installing libxml2 and libxml2-dev 
+       - Install using apt-get
+            apt-get install libxml2
+            apt-get install libxml2-dev
+       - Installing from source code
+         Download your system specific package from http://packages.ubuntu.com/
+         For Precise(12.04 LTS) download its .dpkg packages
+         For libxml2: http://packages.ubuntu.com/precise/libxml2
+         For libxml2-dev : http://packages.ubuntu.com/precise/libxml2-dev
+         
+         Install these packages in your system :
+            dpkg -i libxml2_2.7xyz__.dpkg
+            dpkg -i libxml2-dev_2xyz__.dpkg
+             
+    If you get libxml related error even after installing its dependency like libxml2 and libxml2-dev then try 
+    below  command
+            apt-get install libxml-libxml-perl
+       
+         
+    2. For YAML related Errors
+       Sometimes you may get that yaml is not installed then run following commands:
              apt-get install libyaml-appconfig-perl
              apt-get install libconfig-yaml-perl
         
-    If you get Libxml related error even after installing its dependency like LibXML2 and LibXML2-dev then try 
-    below  command
-             apt-get install libxml-libxml-perl
-
+    3. For cpan related errors:
+       While installing some files using cpan, for example "cpan File::Which" you may get error like checksum mismatch for distribution, then try installing that package using "cpanm"
+       First install cpanm in your system by:
+       apt-get install cpanminus
+       and then install desired package by using cpanm, for example:
+       cpanm File::Which
+       
+       While installing perl dependency using cpan, if you get errors like "XML::NamespaceSupport package not found" or unmet dependency then first install that package using cpan / cpanm and then install your desired package.
+       you can also try installing by force :
+       apt-get -f install
              
