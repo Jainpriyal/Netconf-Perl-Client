@@ -64,6 +64,8 @@ Supported Platforms
    platforms. Later releases may support additional platforms.
 
      * Ubuntu 12.04LTS 
+     * Fedora 15 i686
+     * Centos-6.5-i386
         
 Prerequisites
 ==============
