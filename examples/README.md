@@ -1,4 +1,4 @@
-Edit_Configuration
+edit_configuration
 ====================
 
     This program loads ftp configuration
