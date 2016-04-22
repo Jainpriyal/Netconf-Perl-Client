@@ -1,6 +1,6 @@
 ################################################################
 # edit_configuration.pl
-# 
+# Edit the configuration
 # Description:
 #    Load a configuration given in some XML or text file.
 #    Steps:
